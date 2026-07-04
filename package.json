@@ -1,0 +1,84 @@
+{
+  "name": "copilot-provider-kiro",
+  "displayName": "Kiro for Copilot Chat",
+  "description": "Pick Kiro (AWS CodeWhisperer/Q) models from the Copilot Chat model picker. Claude, DeepSeek, Qwen, and more — zero cost with your Kiro account.",
+  "version": "0.1.0",
+  "publisher": "kiro-community",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.116.0",
+    "node": ">=22"
+  },
+  "categories": [
+    "AI",
+    "Chat"
+  ],
+  "keywords": [
+    "copilot",
+    "kiro",
+    "aws",
+    "codewhisperer",
+    "language model",
+    "ai",
+    "chat"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "enabledApiProposals": [],
+  "icon": "icon.png",
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languageModelChatProviders": [
+      {
+        "vendor": "kiro",
+        "displayName": "Kiro"
+      }
+    ],
+    "commands": [
+      {
+        "command": "copilot-provider-kiro.login",
+        "title": "Kiro: Login"
+      },
+      {
+        "command": "copilot-provider-kiro.logout",
+        "title": "Kiro: Logout"
+      },
+      {
+        "command": "copilot-provider-kiro.status",
+        "title": "Kiro: Show Status"
+      },
+      {
+        "command": "copilot-provider-kiro.usage",
+        "title": "Kiro: Show Usage"
+      }
+    ],
+    "configuration": {
+      "title": "Kiro for Copilot Chat",
+      "properties": {
+        "copilot-provider-kiro.region": {
+          "type": "string",
+          "default": "us-east-1",
+          "description": "AWS region for the Kiro API endpoint"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "esbuild src/extension.ts --bundle --platform=node --format=cjs --outfile=dist/extension.js --external:vscode",
+    "watch": "esbuild src/extension.ts --bundle --platform=node --format=cjs --outfile=dist/extension.js --external:vscode --watch",
+    "check": "tsc --noEmit",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "@types/vscode": "^1.116.0",
+    "@vscode/vsce": "^3.9.1",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "@smithy/core": "^3.24.5"
+  }
+}
