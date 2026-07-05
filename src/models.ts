@@ -90,6 +90,7 @@ export function getThinkingBudget(effort: ThinkingEffort): number {
 }
 
 const ZERO_COST = Object.freeze({ input: 0, output: 0, cacheRead: 0, cacheWrite: 0 });
+const CONFIG_SECTION = "copilot-provider-kiro";
 
 // Valid Kiro model IDs - API accepts friendly names directly
 export const KIRO_MODEL_IDS = new Set([
@@ -241,6 +242,12 @@ export const kiroModels: KiroModel[] = [
  * e.g. "claude-opus-4-6" -> "claude-opus-4.6"
  */
 export function resolveKiroModel(modelId: string): string {
+  const config = vscode.workspace.getConfiguration(CONFIG_SECTION);
+  const overrides = config.get<Record<string, string>>("modelIdOverrides");
+  const override = overrides?.[modelId]?.trim();
+
+  if (override) return override;
+
   // Map alias back to actual Kiro API model ID
   if (modelId === "kiro-auto") return "auto";
   return modelId.replace(/(\d)-(\d)/g, "$1.$2");
