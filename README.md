@@ -1,17 +1,19 @@
 # Copilot Provider - Kiro
 
-VS Code 扩展，将 Kiro (AWS CodeWhisperer/Q) 的 AI 模型注册为 GitHub Copilot 的语言模型提供者。
+A VS Code extension that registers Kiro (AWS CodeWhisperer/Q) AI models as language model providers for GitHub Copilot.
 
-## 功能
+[中文文档](./README.zh-CN.md)
 
-- 为 VS Code Copilot Chat 提供 12+ 个 Kiro 模型
-- 支持多种认证方式：AWS Builder ID、IAM Identity Center (SSO)
-- 自动从 Kiro IDE / kiro-cli 发现已有凭证
-- 自动刷新 token
-- 支持工具调用 (Tool Use)
-- 流式响应
+## Features
 
-## 支持的模型
+- Provides 12+ Kiro models for VS Code Copilot Chat
+- Supports multiple authentication methods: AWS Builder ID, IAM Identity Center (SSO)
+- Auto-discovers existing credentials from Kiro IDE / kiro-cli
+- Automatic token refresh
+- Tool Use support
+- Streaming responses
+
+## Supported Models
 
 | Model | Family | Context | Features |
 |-------|--------|---------|----------|
@@ -29,9 +31,9 @@ VS Code 扩展，将 Kiro (AWS CodeWhisperer/Q) 的 AI 模型注册为 GitHub Co
 | Qwen3 Coder Next | qwen | 256K | Reasoning |
 | Auto | auto | 1M | Routing |
 
-## 安装
+## Installation
 
-1. 克隆仓库并安装依赖：
+1. Clone the repository and install dependencies:
 ```bash
 git clone https://github.com/your-repo/copilot-provider-kiro.git
 cd copilot-provider-kiro
@@ -39,27 +41,27 @@ npm install
 npm run build
 ```
 
-2. 在 VS Code 中按 F5 启动扩展开发宿主
+2. Press F5 in VS Code to launch the Extension Development Host
 
-## 认证
+## Authentication
 
-扩展会自动尝试以下认证来源（按优先级）：
+The extension auto-detects credentials from the following sources (in priority order):
 
 1. **Kiro IDE Token** — `~/.aws/sso/cache/kiro-auth-token.json`
-2. **kiro-cli Social Token** — kiro-cli SQLite 数据库中的 Google/GitHub 令牌
-3. **kiro-cli IDC Token** — kiro-cli SQLite 数据库中的 Builder ID/IDC 令牌
+2. **kiro-cli Social Token** — Google/GitHub token from kiro-cli SQLite database
+3. **kiro-cli IDC Token** — Builder ID/IDC token from kiro-cli SQLite database
 
-如果没有找到已有凭证，使用 `Kiro: Login` 命令手动认证。
+If no existing credentials are found, use the `Kiro: Login` command to authenticate manually.
 
-## 命令
+## Commands
 
-- `Kiro: Login` — 启动设备代码认证流程
-- `Kiro: Logout` — 清除已存储的凭证
-- `Kiro: Show Status` — 显示当前认证状态
+- `Kiro: Login` — Start device code authentication flow
+- `Kiro: Logout` — Clear stored credentials
+- `Kiro: Show Status` — Display current authentication status
 
-## 使用
+## Usage
 
-认证成功后，Kiro 模型会自动出现在 Copilot Chat 的模型选择器中。你可以在设置中配置默认模型：
+Once authenticated, Kiro models will automatically appear in the Copilot Chat model picker. You can configure the default model in settings:
 
 ```json
 {
@@ -71,28 +73,28 @@ npm run build
 }
 ```
 
-`copilot-provider-kiro.modelAliases` 用于给固定的 VS Code 模型 ID（左侧 key）设置显示别名（右侧 value）。实际发送到 Kiro API 的模型 ID 保持不变。
+`copilot-provider-kiro.modelAliases` sets display aliases (right side value) for fixed VS Code model IDs (left side key). The actual model ID sent to the Kiro API remains unchanged.
 
-## 开发
+## Development
 
 ```bash
-npm run watch   # 开发时自动构建
-npm run check   # TypeScript 类型检查
-npm run build   # 生产构建
+npm run watch   # Auto-build during development
+npm run check   # TypeScript type checking
+npm run build   # Production build
 ```
 
-## 项目结构
+## Project Structure
 
 ```
 src/
-├── extension.ts      # 扩展入口，注册模型
-├── provider.ts       # Language Model Provider 实现
-├── auth.ts           # 认证管理（IDE/CLI/Device Code）
-├── models.ts         # 模型定义
-├── transform.ts      # 消息格式转换
-└── event-parser.ts   # Kiro 流事件解析
+├── extension.ts      # Extension entry point, model registration
+├── provider.ts       # Language Model Provider implementation
+├── auth.ts           # Authentication management (IDE/CLI/Device Code)
+├── models.ts         # Model definitions
+├── transform.ts      # Message format transformation
+└── event-parser.ts   # Kiro stream event parser
 ```
 
-## 许可证
+## License
 
 MIT
