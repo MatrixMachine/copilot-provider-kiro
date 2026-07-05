@@ -77,6 +77,41 @@ interface ToolCallState {
   input: string;
 }
 
+const COPILOT_USAGE_DATA_PART_MIME = "usage";
+
+function reportCopilotContextUsage(
+  progress: vscode.Progress<vscode.LanguageModelResponsePart>,
+  inputTokens?: number,
+  outputTokens?: number,
+): void {
+  if (inputTokens === undefined && outputTokens === undefined) {
+    return;
+  }
+
+  const prompt = inputTokens ?? 0;
+  const completion = outputTokens ?? 0;
+  const total = prompt + completion;
+  const data = {
+    prompt_tokens: prompt,
+    completion_tokens: completion,
+    total_tokens: total,
+    prompt_tokens_details: {
+      cached_tokens: 0,
+    },
+  };
+
+  try {
+    progress.report(
+      new vscode.LanguageModelDataPart(
+        new TextEncoder().encode(JSON.stringify(data)),
+        COPILOT_USAGE_DATA_PART_MIME,
+      ),
+    );
+  } catch {
+    // Ignore usage reporting failures to avoid affecting normal responses.
+  }
+}
+
 /**
  * Kiro Chat Provider — implements vscode.LanguageModelChatProvider so
  * Kiro models appear directly in the Copilot Chat model picker.
@@ -254,7 +289,7 @@ export class KiroChatProvider implements vscode.LanguageModelChatProvider {
 
       // Stream the response
       if (!response.body) throw new Error("No response body");
-      await this.processStream(response.body, progress, token);
+      await this.processStream(response.body, progress, token, modelInfo.maxInputTokens);
       this.outputChannel.appendLine(`[Kiro] Response complete.`);
       return;
     }
@@ -286,9 +321,13 @@ export class KiroChatProvider implements vscode.LanguageModelChatProvider {
     body: ReadableStream<Uint8Array>,
     progress: vscode.Progress<vscode.LanguageModelResponsePart>,
     token: vscode.CancellationToken,
+    maxInputTokens: number,
   ): Promise<void> {
     const bodyReader = body.getReader();
     let currentToolCall: ToolCallState | null = null;
+    let usageInputTokens: number | undefined;
+    let usageOutputTokens: number | undefined;
+    let contextUsageInputTokens: number | undefined;
 
     const flushToolCall = () => {
       if (!currentToolCall) return;
@@ -435,8 +474,19 @@ export class KiroChatProvider implements vscode.LanguageModelChatProvider {
           void bodyReader.cancel().catch(() => {});
           break;
         }
-        case "usage":
-        case "contextUsage":
+        case "usage": {
+          if (event.data.inputTokens !== undefined) {
+            usageInputTokens = event.data.inputTokens;
+          }
+          if (event.data.outputTokens !== undefined) {
+            usageOutputTokens = event.data.outputTokens;
+          }
+          break;
+        }
+        case "contextUsage": {
+          contextUsageInputTokens = Math.round((event.data.contextUsagePercentage / 100) * maxInputTokens);
+          break;
+        }
         case "followupPrompt":
           break;
       }
@@ -449,6 +499,9 @@ export class KiroChatProvider implements vscode.LanguageModelChatProvider {
       progress.report(new vscode.LanguageModelTextPart(pendingText));
     }
     flushToolCall();
+
+    // Prefer explicit usage.inputTokens; fallback to context usage percentage estimate.
+    reportCopilotContextUsage(progress, usageInputTokens ?? contextUsageInputTokens, usageOutputTokens);
 
     if (streamError) {
       throw new Error(`Kiro stream error: ${streamError}`);
