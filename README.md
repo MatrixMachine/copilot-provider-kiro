@@ -64,14 +64,14 @@ npm run build
 ```json
 {
   "copilot-provider-kiro.defaultModel": "claude-sonnet-4",
-  "copilot-provider-kiro.modelIdOverrides": {
-    "deepseek-3-2": "deepseek-chat",
-    "qwen3-coder-next": "qwen-plus"
+  "copilot-provider-kiro.modelAliases": {
+    "deepseek-3-2": "DeepSeek Chat (Custom)",
+    "qwen3-coder-next": "Qwen Plus (Team)"
   }
 }
 ```
 
-`copilot-provider-kiro.modelIdOverrides` 用于把 VS Code 里的模型 ID（左侧 key）映射到实际发送给 Kiro API 的模型 ID（右侧 value）。
+`copilot-provider-kiro.modelAliases` 用于给固定的 VS Code 模型 ID（左侧 key）设置显示别名（右侧 value）。实际发送到 Kiro API 的模型 ID 保持不变。
 
 ## 开发
 

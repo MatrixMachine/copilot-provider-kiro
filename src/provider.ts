@@ -13,6 +13,7 @@ import {
   kiroModels,
   resolveApiRegion,
   resolveKiroModel,
+  resolveModelAlias,
   buildThinkingEffortSchema,
   getConfiguredThinkingEffort,
   getThinkingBudget,
@@ -123,7 +124,7 @@ export class KiroChatProvider implements vscode.LanguageModelChatProvider {
 
     return kiroModels.map((model) => ({
       id: model.id,
-      name: model.name,
+      name: resolveModelAlias(model.id, model.name),
       family: model.family,
       version: model.version,
       detail: hasCredentials ? "Kiro (Free)" : "Kiro: Login required",

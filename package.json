@@ -5,6 +5,10 @@
   "version": "0.1.0",
   "publisher": "kiro-community",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MatrixMachine/copilot-provider-kiro.git"
+  },
   "engines": {
     "vscode": "^1.116.0",
     "node": ">=22"
@@ -61,77 +65,77 @@
           "default": "us-east-1",
           "description": "AWS region for the Kiro API endpoint"
         },
-        "copilot-provider-kiro.modelIdOverrides": {
+        "copilot-provider-kiro.modelAliases": {
           "type": "object",
           "default": {
-            "claude-opus-4-8": "claude-opus-4.8",
-            "claude-opus-4-7": "claude-opus-4.7",
-            "claude-opus-4-6": "claude-opus-4.6",
-            "claude-sonnet-4-6": "claude-sonnet-4.6",
-            "claude-sonnet-4-5": "claude-sonnet-4.5",
-            "claude-sonnet-4": "claude-sonnet-4",
-            "claude-haiku-4-5": "claude-haiku-4.5",
-            "deepseek-3-2": "deepseek-3.2",
-            "minimax-m2-5": "minimax-m2.5",
-            "minimax-m2-1": "minimax-m2.1",
-            "glm-5": "glm-5",
-            "qwen3-coder-next": "qwen3-coder-next",
-            "kiro-auto": "auto"
+            "claude-opus-4-8": "Claude Opus 4.8",
+            "claude-opus-4-7": "Claude Opus 4.7",
+            "claude-opus-4-6": "Claude Opus 4.6",
+            "claude-sonnet-4-6": "Claude Sonnet 4.6",
+            "claude-sonnet-4-5": "Claude Sonnet 4.5",
+            "claude-sonnet-4": "Claude Sonnet 4",
+            "claude-haiku-4-5": "Claude Haiku 4.5",
+            "deepseek-3-2": "DeepSeek 3.2",
+            "minimax-m2-5": "MiniMax M2.5",
+            "minimax-m2-1": "MiniMax M2.1",
+            "glm-5": "GLM 5",
+            "qwen3-coder-next": "Qwen3 Coder Next",
+            "kiro-auto": "Kiro Auto"
           },
-          "description": "Override API model IDs sent to Kiro for each VS Code model ID (useful for custom gateways/proxies).",
+          "description": "Customize the display alias for each fixed VS Code model ID.",
           "additionalProperties": false,
           "properties": {
             "claude-opus-4-8": {
               "type": "string",
-              "description": "API model ID override for Claude Opus 4.8"
+              "description": "Display alias for Claude Opus 4.8"
             },
             "claude-opus-4-7": {
               "type": "string",
-              "description": "API model ID override for Claude Opus 4.7"
+              "description": "Display alias for Claude Opus 4.7"
             },
             "claude-opus-4-6": {
               "type": "string",
-              "description": "API model ID override for Claude Opus 4.6"
+              "description": "Display alias for Claude Opus 4.6"
             },
             "claude-sonnet-4-6": {
               "type": "string",
-              "description": "API model ID override for Claude Sonnet 4.6"
+              "description": "Display alias for Claude Sonnet 4.6"
             },
             "claude-sonnet-4-5": {
               "type": "string",
-              "description": "API model ID override for Claude Sonnet 4.5"
+              "description": "Display alias for Claude Sonnet 4.5"
             },
             "claude-sonnet-4": {
               "type": "string",
-              "description": "API model ID override for Claude Sonnet 4"
+              "description": "Display alias for Claude Sonnet 4"
             },
             "claude-haiku-4-5": {
               "type": "string",
-              "description": "API model ID override for Claude Haiku 4.5"
+              "description": "Display alias for Claude Haiku 4.5"
             },
             "deepseek-3-2": {
               "type": "string",
-              "description": "API model ID override for DeepSeek 3.2"
+              "description": "Display alias for DeepSeek 3.2"
             },
             "minimax-m2-5": {
               "type": "string",
-              "description": "API model ID override for MiniMax M2.5"
+              "description": "Display alias for MiniMax M2.5"
             },
             "minimax-m2-1": {
               "type": "string",
-              "description": "API model ID override for MiniMax M2.1"
+              "description": "Display alias for MiniMax M2.1"
             },
             "glm-5": {
               "type": "string",
-              "description": "API model ID override for GLM 5"
+              "description": "Display alias for GLM 5"
             },
             "qwen3-coder-next": {
               "type": "string",
-              "description": "API model ID override for Qwen3 Coder Next"
+              "description": "Display alias for Qwen3 Coder Next"
             },
             "kiro-auto": {
               "type": "string",
-              "description": "API model ID override for Kiro Auto"
+              "description": "Display alias for Kiro Auto"
             }
           }
         }

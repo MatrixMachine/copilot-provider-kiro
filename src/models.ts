@@ -242,15 +242,19 @@ export const kiroModels: KiroModel[] = [
  * e.g. "claude-opus-4-6" -> "claude-opus-4.6"
  */
 export function resolveKiroModel(modelId: string): string {
-  const config = vscode.workspace.getConfiguration(CONFIG_SECTION);
-  const overrides = config.get<Record<string, string>>("modelIdOverrides");
-  const override = overrides?.[modelId]?.trim();
-
-  if (override) return override;
-
   // Map alias back to actual Kiro API model ID
   if (modelId === "kiro-auto") return "auto";
   return modelId.replace(/(\d)-(\d)/g, "$1.$2");
+}
+
+/**
+ * Resolve user-configured alias (display name) for a VS Code model ID.
+ */
+export function resolveModelAlias(modelId: string, defaultName: string): string {
+  const config = vscode.workspace.getConfiguration(CONFIG_SECTION);
+  const aliases = config.get<Record<string, string>>("modelAliases");
+  const alias = aliases?.[modelId]?.trim();
+  return alias || defaultName;
 }
 
 /**
